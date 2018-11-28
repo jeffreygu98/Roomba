@@ -4,121 +4,56 @@ Created on Nov 28, 2018
 @author: nw
 '''
 import turtle
+width = 500.0
+height = 500.0
+
 wn = turtle.Screen()
+wn.setup(width, height)
 image = "irobot.gif"
 wn.addshape(image)
-wn.bgcolor("beige")
+wn.bgcolor("sienna")
 Roomba = turtle.Turtle()
+Roomba.pencolor("white")
+Roomba.pensize(15)
 Roomba.shape(image)
-Roomba.speed(8)
-Roomba.pensize(5)
+Roomba.speed(10)
 
-def housesquare(Roomba):
-    #square that represents part of the shape of a house and fills it with color lightblue
-    Roomba.fillcolor("lightblue")
-    Roomba.penup()
-    Roomba.setposition(-100,-25)
-    Roomba.pendown()
-    Roomba.pencolor("brown")
-    Roomba.begin_fill()
-    for i in range(4):
-        Roomba.forward(200)
-        Roomba.right(90)
-    Roomba.end_fill()
-def housetriangle(Roomba):
-    #equilateral triangle that represents the roof of a house and fills it with color lightblue
-    Roomba.fillcolor("lightblue")
-    Roomba.begin_fill()
-    for i in range(3):
-        Roomba.backward(-200)
-        Roomba.left(120)
-    Roomba.end_fill()
+def move(turtle, distance):
+    distance = float(distance)
+    for i in range(0, abs(int(distance/2))):
+        x, y = turtle.pos()
+        print(x)
+        print(y)
+        if (-width/2 < x < width/2) and  (-height/2 < y < height/2):
+            if distance < 0:
+                turtle.forward(-2)
+            else:           
+                turtle.forward(2)
+        else:
+            turtle.undo()
+            break
 
-def housedoor(Roomba):
-    #a rectangle that represents the door of a house along with a doorknob that it fills with the color brown
-    Roomba.penup()
-    Roomba.setx(-10)
-    Roomba.sety(-225)
-    Roomba.pendown()
-    Roomba.forward(25)
-    Roomba.left(90)
-    Roomba.forward(75)
-    Roomba.left(90)
-    Roomba.forward(25)
-    Roomba.left(90)
-    Roomba.forward(75)
-    Roomba.left(90)
-    Roomba.penup()
-    Roomba.forward(18)
-    Roomba.left(90)
-    Roomba.forward(38)
-    Roomba.pendown()
-    Roomba.pensize(1)
-    Roomba.fillcolor("brown")
-    Roomba.begin_fill()
-    Roomba.circle(2)
-    Roomba.end_fill()
-
-def houseatticwindow(Roomba):
-    #a circle that represents the attic window of a house along with corresponding window frames
-    Roomba.pensize(5)
-    Roomba.left(90)
-    Roomba.penup()
-    Roomba.forward(18)
-    Roomba.right(90)
-    Roomba.forward(200)
-    Roomba.right(90)
-    Roomba.forward(9)
-    Roomba.pendown()
-    Roomba.circle(25)
-    Roomba.left(90)
-    Roomba.forward(50)
-    Roomba.penup()
-    Roomba.goto(-1,13)
-    Roomba.left(90)
-    Roomba.forward(25)
-    Roomba.right(90)
-    Roomba.forward(25)
-    Roomba.right(90)
-    Roomba.pendown()
-    Roomba.forward(50)
+def infinite(turtle):
+    while True:
+        current = turtle.heading()
+        x, y = turtle.pos()
+        if (-width/2 < x < width/2) and  (-height/2 < y < height/2):
+                turtle.forward(2)
+        else:
+            turtle.undo()
+            turtle.tiltangle(current+34)
+            turtle.setheading(current+34)       
+     
     
-def sun(Roomba):
-    #a circle that represents the sun and fills in in with the color orange
-    Roomba.penup()
-    Roomba.setpos(-320,225)
-    Roomba.pendown()
-    Roomba.fillcolor("orange")
-    Roomba.begin_fill()
-    Roomba.circle(50)
-    Roomba.end_fill()
 
 def lawn(Roomba):
     #little green vertical lines that are meant to represent blades of grass that make up a lawn
-    Roomba.right(90)
-    Roomba.penup()
-    Roomba.forward(485)
-    Roomba.pendown()
-    Roomba.pencolor("lightgreen")
-    Roomba.forward(25)
-    Roomba.left(90)
-    for i in range(25):
-        Roomba.forward(25)
-        Roomba.left(90)
-        Roomba.forward(25)
-        Roomba.left(180)
-        Roomba.forward(25)
-        Roomba.left(90)
-    Roomba.left(90)
-    Roomba.forward(25)
+    infinite(Roomba)
+#     Roomba.left(2)
+#     move(Roomba,1200)
 
 def picture():
-    #calls the functions that make up the picture
-    housesquare(Roomba)
-    housetriangle(Roomba)
-    housedoor(Roomba)
-    houseatticwindow(Roomba)
-    sun(Roomba)
+    #calls the functions that make up the picture   
     lawn(Roomba)
 
 if __name__ == '__main__':
