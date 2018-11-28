@@ -4,10 +4,12 @@ Created on Nov 28, 2018
 @author: nw
 '''
 import turtle
+wn = turtle.Screen()        # creates a graphics window
+Roomba = turtle.Turtle()
+wn.exitonclick()                # wait for a user click on the canvas
 
-def move():
-    print("hello")
+
 
 
 if __name__ == '__main__':
-    move()
+    Roomba.forward(50)
