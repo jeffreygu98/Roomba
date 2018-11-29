@@ -4,6 +4,7 @@ Created on Nov 28, 2018
 @author: nw
 '''
 import turtle
+import random
 import time
 from easygui import *
 
@@ -22,6 +23,7 @@ Roomba.shape(image)
 # Roomba.speed(10)
 
 def move(turtle, distance):
+    turtle.speed(0)
     distance = float(distance)
     for i in range(0, abs(int(distance/2))):
         x, y = turtle.pos()
@@ -36,9 +38,15 @@ def move(turtle, distance):
             turtle.undo()
             break
 
-def infinite(turtle, angle, timer, length):
+def custom(turtle):
+    # sets the angle of movement
+    angle = float(integerbox(msg="Please put the angle (-180 to 180) you wish the Roomba to travel with.", lowerbound = -180, upperbound = 180))
+    
+    # sets how long the Roomba runs
+    length = float(integerbox("How long would you like the Roomba to run (in seconds)?"))
+    start = time.time()
     while True:
-        if time.time() > timer + length:
+        if time.time() > start + length:
             break
         current = turtle.heading()
         x, y = turtle.pos()
@@ -46,6 +54,23 @@ def infinite(turtle, angle, timer, length):
                 turtle.forward(2)
         else:
             turtle.undo()
+            turtle.setheading(current+angle)
+
+def freeroam(turtle):
+    
+    # sets how long the Roomba runs
+    length = float(integerbox("How long would you like the Roomba to run (in seconds)?"))
+    start = time.time()
+    while True:
+        if time.time() > start + length:
+            break
+        current = turtle.heading()
+        x, y = turtle.pos()
+        if (-width/2 < x < width/2) and  (-height/2 < y < height/2):
+                turtle.forward(2)
+        else:
+            turtle.undo()
+            angle = random.randint(-180,180)
             turtle.setheading(current+angle)       
      
 def home(turtle, x, y):
@@ -55,26 +80,29 @@ def home(turtle, x, y):
 
 
 if __name__ == '__main__':
-    # sets the angle of movement
-    angle = float(integerbox("Please put the angle you wish the Roomba to travel with."))
-    
-    # sets how long the Roomba runs
-    length = float(integerbox("How long would you like the Roomba to run (in seconds)?"))
     
     # Optional setting: Roomba's home coordinates; default is 0,0
-    homex = 0
-    homey = 0
-    homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
-    homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
     
-    # set timer start
-    start = time.time()
+    homeset = buttonbox(msg="Would you like to set Roomba's home coordinates or use the default settings ?", title = "Home Settings", choices = ["Custom", "Default"])
+    if homeset == "Custom":
+        homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+        homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+    else:    
+        homex = 0
+        homey = 0
     
-    # Roomba run program
-    infinite(Roomba, angle, start, length)
+    # Specify running mode for Roomba
     
-    # Return Roomba to its home
+    type = buttonbox(msg="Please choose Roomba's running mode.", title = "Running mode", choices =["Free-roam (random bump)", "Custom bump angle"])
+
+    if type=="Free-roam (random bump)":
+        freeroam(Roomba)
+    if type =="Custom bump angle":
+        custom(Roomba)
+    
+    # Return Roomba to its home; final goodbyes
     home(Roomba, homex, homey)
+    msgbox("Your home is now clean. Good-bye!")
     
     # Exit the program with click
     wn.exitonclick()
