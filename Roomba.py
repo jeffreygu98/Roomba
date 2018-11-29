@@ -4,6 +4,8 @@ Created on Nov 28, 2018
 @author: nw
 '''
 import turtle
+from easygui import *
+
 width = 500.0
 height = 500.0
 
@@ -33,7 +35,7 @@ def move(turtle, distance):
             turtle.undo()
             break
 
-def infinite(turtle):
+def infinite(turtle, angle):
     while True:
         current = turtle.heading()
         x, y = turtle.pos()
@@ -41,14 +43,14 @@ def infinite(turtle):
                 turtle.forward(2)
         else:
             turtle.undo()
-            turtle.tiltangle(current+34)
-            turtle.setheading(current+34)       
+            turtle.setheading(current+angle)       
      
     
 
 def lawn(Roomba):
-    #little green vertical lines that are meant to represent blades of grass that make up a lawn
-    infinite(Roomba)
+    angle = float(integerbox("Please put the angle you wish the Roomba to travel with."))
+    
+    infinite(Roomba,angle)
 #     Roomba.left(2)
 #     move(Roomba,1200)
 
