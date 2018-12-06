@@ -10,6 +10,12 @@ from easygui import *
 
 width = 500.0
 height = 500.0
+xhistory = [0]*551
+coordinates = []
+for i in range(-250,251):
+    for j in range(-250,251):
+        coordinates.append((i,j))
+yhistory = [0]*551
 
 wn = turtle.Screen()
 wn.setup(width, height)
@@ -71,7 +77,30 @@ def freeroam(turtle):
         else:
             turtle.undo()
             angle = random.randint(-180,180)
-            turtle.setheading(current+angle)       
+            turtle.setheading(current+angle) 
+
+def complete(turtle):
+    
+    while True:
+        if (coordinates.count(0) == 250000):
+            break 
+        current = turtle.heading()
+        x, y = turtle.pos()
+        coord = (x,y)
+#         for i in range((int(x)+240),(int(x)+261)):
+#             xhistory[i] = 1
+#         for i in range((int(y)+240),(int(y)+261)):
+#             yhistory[i] = 1
+        idx = coordinates.index(coord)
+        coordinates[idx] = 0
+        print (coordinates)
+        if (-width/2 < x < width/2) and  (-height/2 < y < height/2):
+                turtle.forward(1)
+        else:
+            turtle.undo()
+            angle = random.randint(-180,180)
+            turtle.setheading(current+angle) 
+
      
 def home(turtle, x, y):
     turtle.penup()
@@ -83,22 +112,24 @@ if __name__ == '__main__':
     
     # Optional setting: Roomba's home coordinates; default is 0,0
     
-    homeset = buttonbox(msg="Would you like to set Roomba's home coordinates or use the default settings ?", title = "Home Settings", choices = ["Custom", "Default"])
-    if homeset == "Custom":
-        homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
-        homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
-    else:    
-        homex = 0
-        homey = 0
+    complete(Roomba)
     
-    # Specify running mode for Roomba
-    
-    type = buttonbox(msg="Please choose Roomba's running mode.", title = "Running mode", choices =["Free-roam (random bump)", "Custom bump angle"])
-
-    if type=="Free-roam (random bump)":
-        freeroam(Roomba)
-    if type =="Custom bump angle":
-        custom(Roomba)
+#     homeset = buttonbox(msg="Would you like to set Roomba's home coordinates or use the default settings ?", title = "Home Settings", choices = ["Custom", "Default"])
+#     if homeset == "Custom":
+#         homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+#         homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+#     else:    
+#         homex = 0
+#         homey = 0
+#       
+#     # Specify running mode for Roomba
+#       
+#     type = buttonbox(msg="Please choose Roomba's running mode.", title = "Running mode", choices =["Free-roam (random bump)", "Custom bump angle"])
+#   
+#     if type=="Free-roam (random bump)":
+#         freeroam(Roomba)
+#     if type =="Custom bump angle":
+#         custom(Roomba)
     
     # Return Roomba to its home; final goodbyes
     home(Roomba, homex, homey)
