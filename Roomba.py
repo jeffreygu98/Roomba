@@ -103,7 +103,7 @@ def complete(turtle):
 #         if(len(coordinates)<100):
 #             clean = True
         if (-width/2 < x < width/2) and (-height/2 < y < height/2):
-                turtle.forward(25)
+                turtle.forward(1)
         else:
             turtle.undo()
             angle = random.randint(-180,180)
@@ -119,24 +119,24 @@ if __name__ == '__main__':
     
     # Optional setting: Roomba's home coordinates; default is 0,0
     
-    complete(Roomba)
-    
-#     homeset = buttonbox(msg="Would you like to set Roomba's home coordinates or use the default settings ?", title = "Home Settings", choices = ["Custom", "Default"])
-#     if homeset == "Custom":
-#         homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
-#         homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
-#     else:    
-#         homex = 0
-#         homey = 0
-#       
-#     # Specify running mode for Roomba
-#       
-#     type = buttonbox(msg="Please choose Roomba's running mode.", title = "Running mode", choices =["Free-roam (random bump)", "Custom bump angle"])
-#   
-#     if type=="Free-roam (random bump)":
-#         freeroam(Roomba)
-#     if type =="Custom bump angle":
-#         custom(Roomba)
+    homeset = buttonbox(msg="Would you like to set Roomba's home coordinates or use the default settings ?", title = "Home Settings", choices = ["Custom", "Default"])
+    if homeset == "Custom":
+        homex = integerbox(msg="Roomba's home x-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+        homey = integerbox(msg="Roomba's home y-coordinate (-250 to 250)", lowerbound = -250, upperbound = 250)
+    else:    
+        homex = 0
+        homey = 0
+       
+    # Specify running mode for Roomba
+       
+    type = buttonbox(msg="Please choose Roomba's running mode.", title = "Running mode", choices =["Free-roam (random bump)", "Custom bump angle", "Deep clean"])
+   
+    if type=="Free-roam (random bump)":
+        freeroam(Roomba)
+    if type =="Custom bump angle":
+        custom(Roomba)
+    if type == "Deep clean":
+        complete(Roomba)
     
     # Return Roomba to its home; final goodbyes
     home(Roomba, homex, homey)
