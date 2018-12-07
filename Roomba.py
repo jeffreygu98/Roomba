@@ -1,21 +1,19 @@
 '''
 Created on Nov 28, 2018
 
-@author: nw
+@author: nw and jg
 '''
 import turtle
 import random
 import time
 from easygui import *
+import numpy as np
 
 width = 500.0
 height = 500.0
-xhistory = [0]*551
-coordinates = []
-for i in range(-250,251):
-    for j in range(-250,251):
-        coordinates.append((i,j))
-yhistory = [0]*551
+clean_grid = np.zeros((500,500),dtype = np.bool)
+print(clean_grid.shape)
+num_uncleaned = int(width*height)
 
 wn = turtle.Screen()
 wn.setup(width, height)
@@ -27,6 +25,8 @@ Roomba.pencolor("white")
 Roomba.pensize(50)
 Roomba.shape(image)
 # Roomba.speed(10)
+
+
 
 def move(turtle, distance):
     turtle.speed(0)
@@ -80,28 +80,35 @@ def freeroam(turtle):
             turtle.setheading(current+angle) 
 
 def complete(turtle):
-    
+    global num_uncleaned
+    clean = False
     while True:
-        if (coordinates.count(0) == 250000):
-            break 
+        if(num_uncleaned == 0):
+            break
+            
         current = turtle.heading()
         x, y = turtle.pos()
-        coord = (x,y)
-#         for i in range((int(x)+240),(int(x)+261)):
-#             xhistory[i] = 1
-#         for i in range((int(y)+240),(int(y)+261)):
-#             yhistory[i] = 1
-        idx = coordinates.index(coord)
-        coordinates[idx] = 0
-        print (coordinates)
-        if (-width/2 < x < width/2) and  (-height/2 < y < height/2):
-                turtle.forward(1)
+        coord = (int(x)+249,int(y)+249)
+        print("current coords: ",int(coord[0]),int(coord[1]))
+        for i in range(50):
+            for j in range(50):
+                xclean = coord[0]+i
+                yclean = coord[1]+j
+                if 0<=xclean<500 and 0<=yclean<500 and (i**2+j**2 <= 25**2):
+                    if not clean_grid[xclean,yclean]:
+                        clean_grid[xclean,yclean] = True
+                        num_uncleaned-=1
+        print("num of coords: ",num_uncleaned)
+        print(250000-np.sum(clean_grid))
+#         if(len(coordinates)<100):
+#             clean = True
+        if (-width/2 < x < width/2) and (-height/2 < y < height/2):
+                turtle.forward(25)
         else:
             turtle.undo()
             angle = random.randint(-180,180)
-            turtle.setheading(current+angle) 
-
-     
+            turtle.setheading(current+angle)     
+    
 def home(turtle, x, y):
     turtle.penup()
     turtle.speed(1)
