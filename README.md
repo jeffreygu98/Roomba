@@ -21,7 +21,7 @@ How to run the simulator on your computer:
 
 6) Press Enter. Your local clone will be created.
 
-7) If you do not already have the numpy and easgui libraries installed, use pip (or pip3 depending on your python version) to install then: pip3 install easygui, pip3 install numpy.
+7) If you do not already have the numpy and easgui libraries installed, use pip (or pip3 depending on your python version) to install then: "pip3 install easygui", "pip3 install numpy".
 
 8) Navigate to your cloned directory in your development environment (i.e. Eclipse/Atom) and run Roomba.py
 
